@@ -17,52 +17,28 @@ public class SCell implements Cell {
         return this.dpth;
     }
     /**
-     * this method receives a string and checks for ivalid chars, combinations and sequences.
-     * validates every parenthesis open is being closed
-     * @param str and return if the string is a valid formula or not.
+     * this algorithm checks if a string has an invalid char and every opening parenthesis has closing parenthesis
+     * @param form and return if the string is a valid formula.
      * **/
-    public static boolean is_form(String str) {
-        if (str == null || str.length() < 2) {
-            return false;
-        }
-        if (!str.startsWith("=")) {
-            return false;
-        }
-        String body = str.substring(1);
-        if (body.matches(".*[0-9]+[a-zA-Z].*")) {
-            return false;
-        }
-        if (body.contains("=")) {
-            return false;
-        }
-        if (Character.isLetter(str.charAt(str.length() - 1))) {
-            return false;
-        }
-        if (Helpfull.instancecounter(str, '(') != Helpfull.instancecounter(str, ')')) {
-            return false;
-        }
-        if (str.endsWith(".")) {
-            return false;
-        }
-        for (int i = 0; i < str.length() - 1; i++) {
-            char currentChar = str.charAt(i);
-            char nextChar = str.charAt(i + 1);
-            if (currentChar == '.' && nextChar == '.') {
-                return false;
-            }
-            if (currentChar == '.' && !Character.isDigit(nextChar)) {
-                return false;
-            }
-            if (Character.isLetter(currentChar) && !(Character.isDigit(nextChar) || nextChar == '(')) {
-                return false;
-            }
-            if (currentChar == '+' || currentChar == '-' || currentChar == '*' || currentChar == '/' && !(Character.isLetter(nextChar) || Character.isDigit(nextChar) || nextChar == '(')) {
-                return false;
-            }
+    public static boolean is_form(String form) {
+        if (form == null || form.length() < 2) return false;
+        if (form.charAt(0) != '=') return false;
+        if (form.substring(1).matches(".*[0-9]+[a-zA-Z].*")) return false;
+        if (form.substring(1).contains("=")) return false;
+        if (Character.isLetter(form.charAt(form.length() - 1))) return false;
+        if (Helpfull.sCount(form, '(') != Helpfull.sCount(form, ')')) return false;
+        if (form.endsWith(".")) return false;
+        for (int i = 0; i < form.length() - 1; i++)
+        {
+            char currentChar = form.charAt(i);
+            char nextChar = form.charAt(i + 1);
+            if (currentChar == '.' && nextChar == '.') return false;
+            if (currentChar == '.' && !Character.isDigit(nextChar)) return false;
+            if (Character.isLetter(currentChar) && !(Character.isDigit(nextChar) || nextChar == '(')) return false;
+            if (Helpfull.operator(currentChar) && !(Character.isLetter(nextChar) || Character.isDigit(nextChar) || nextChar == '(')) return false;
         }
         return true;
     }
-
     @Override
     public String toString() {
         return getData();
@@ -74,10 +50,9 @@ public class SCell implements Cell {
     @Override
     public String getData() {
         return line;
-    } // return the data String
-    /**
-     * return if the given string is a number (ex. 2.4 / 689540 / 0000.0)
-     * **/
+    }
+    /**checks if a string is a number
+     **/
     public static boolean isNumber(String str) {
         try {
             double s = Double.parseDouble(str);
@@ -90,43 +65,25 @@ public class SCell implements Cell {
         return !isNumber(str) && !str.startsWith("=");
     }
     /**
-     * returns the type of cell based on its data
-     * return Number if data is representing number
-     * return Form if data is representing formula
-     * return text if data is representing text
-     * return Err_Form if the data is formula but invalid (Using isForm)
-     * return Err_Cycle if subcell refrence is Endless (ex a1 = "a1 +3")
+     * checks the type of cell based on its data
+     * if isNumber is true return Number
+     * if isForm is true return Form
+     * if isText is true return Text
+     * if the data is formula but invalid return Err_Form
+     * if subcell is defined by itself return Err_Cycle
      * **/
     @Override
     public int getType() {
-        if (this.type == Ex2Utils.ERR_FORM_FORMAT) {
-            return Ex2Utils.ERR_FORM_FORMAT;
-        }
-        if (getData() == null) {
-            return Ex2Utils.TEXT;
-        }
-        if (getData().isEmpty()) {
-            return Ex2Utils.TEXT;
-        }
-        if (Objects.equals(getData(), Ex2Utils.ERR_FORM)) {
-            return Ex2Utils.ERR_FORM_FORMAT;
-        }
-        if (this.dpth == Ex2Utils.ERR_CYCLE_FORM) {
-            return Ex2Utils.ERR_CYCLE_FORM;
-        }
+        if (this.type == Ex2Utils.ERR_FORM_FORMAT) return Ex2Utils.ERR_FORM_FORMAT;
+        if(getData()==null){return Ex2Utils.TEXT;}
+        if (getData().isEmpty())return Ex2Utils.TEXT;
+        if(Objects.equals(getData(), Ex2Utils.ERR_FORM)){return Ex2Utils.ERR_FORM_FORMAT;}
+        if(this.dpth==Ex2Utils.ERR_CYCLE_FORM)return Ex2Utils.ERR_CYCLE_FORM;
         String tmp_dta = getData();
-        if (tmp_dta.charAt(0) == '=' && (!is_form(tmp_dta) || tmp_dta.replace("=", "").isEmpty())) {
-            return Ex2Utils.ERR_FORM_FORMAT;
-        }
-        if (isText(tmp_dta)) {
-            return Ex2Utils.TEXT;
-        }
-        if (isNumber(tmp_dta)) {
-            return Ex2Utils.NUMBER;
-        }
-        if (is_form(tmp_dta)) {
-            return Ex2Utils.FORM;
-        }
+        if(getData().charAt(0)=='='&&!is_form(getData())|| tmp_dta.replace("=","").isEmpty()){return Ex2Utils.ERR_FORM_FORMAT;}
+        if (isText(getData())) {return Ex2Utils.TEXT;}
+        if (isNumber(getData())) {return Ex2Utils.NUMBER;}
+        if (is_form(getData())) {return Ex2Utils.FORM;}
         return -1;
     }
 
