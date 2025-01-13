@@ -269,24 +269,24 @@ public class Ex2Sheet implements Sheet {
     }
 
     /**
-     * This method determines the final value of a cell's formula, accounting for dependencies.
-     * @param a is evaluated: if it contains a formula, the computeForm method is called. If it contains subcells, their values are computed by recursion first.
-     * The algorithm returns the computed value as a double.
+     * This method determines the final value of ce cell's formula, accounting for dependencies.
+     * @param ce is evaluated: if it contains ce formula, the computeForm method is called. If it contains subcells, their values are computed by recursion first.
+     * The algorithm returns the computed value as ce double.
      **/
-    public double eValuate(Cell a)
+    public double eValuate(Cell ce)
     {
         double value=0;
-        a.setData(a.getData().toLowerCase());
+        ce.setData(ce.getData().toLowerCase());
         String str2eval;
-        int a_depth = setDepth(a);
-        if (SCell.isNumber(a.getData())){return Double.parseDouble(a.getData());}
-        if (SCell.is_form(a.getData())&&a_depth==0&&!a.getData().isEmpty())
-        {   str2eval = a.getData();
+        int a_depth = setDepth(ce);
+        if (SCell.isNumber(ce.getData())){return Double.parseDouble(ce.getData());}
+        if (SCell.is_form(ce.getData())&&a_depth==0&&!ce.getData().isEmpty())
+        {   str2eval = ce.getData();
             return computeFrom(str2eval);
         }
-        if (SCell.is_form(a.getData())&&a_depth!=0&&!a.getData().isEmpty())
-        {   Cell c = getSubCells(a);
-            str2eval = a.getData().replace(getSubCells(a).getName(),String.valueOf(eValuate(getSubCells(a))));
+        if (SCell.is_form(ce.getData())&&a_depth!=0&&!ce.getData().isEmpty())
+        {   Cell c = getSubCells(ce);
+            str2eval = ce.getData().replace(getSubCells(ce).getName(),String.valueOf(eValuate(getSubCells(ce))));
             Cell sub = new SCell(str2eval);
             if (containCell(str2eval)){ value = value + eValuate(sub);}
             if (!containCell(str2eval)) value =  value + computeFrom(str2eval);

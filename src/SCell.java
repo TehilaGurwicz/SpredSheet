@@ -33,7 +33,7 @@ public class SCell implements Cell {
     /**
      * this algorithm checks if a string has an invalid char and every opening parenthesis has closing parenthesis
      * @param form and return if the string is a valid formula.
-     * **/
+     **/
     public static boolean is_form(String form) {
         if (form == null || form.length() < 2) return false;
         if (form.charAt(0) != '=') return false;
