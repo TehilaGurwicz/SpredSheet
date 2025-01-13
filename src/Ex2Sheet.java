@@ -60,26 +60,6 @@ public class Ex2Sheet implements Sheet {
         return table[x][y];
     }
     /**
-     * return the cell in the cord
-     * **/
-    @Override
-    public Cell get(String cords)
-    {
-        Cell ans = null;
-        ans =  this.table[Helpfull.char2num(cords.charAt(0))][Integer.parseInt(cords.substring(1))];
-        return ans;
-    }
-
-    @Override
-    public int width() { // returns this.length
-        return table.length;
-    }
-    @Override
-    public int height() // returns this.height
-    {
-        return table[0].length;
-    }
-    /**
      * This method sets the value of 'ce' to the cell at (x,y) and sets the cell's "name" to accordingly
      **/
     @Override
@@ -89,6 +69,62 @@ public class Ex2Sheet implements Sheet {
         table[x][y] = c;
         c.setName(Helpfull.intToChar(x)+""+y);
     }
+    /**
+     * return the cell in the cord
+     * **/
+    @Override
+    public Cell get(String cords)
+    {
+        Cell ans = null;
+        ans =  this.table[Helpfull.char2num(cords.charAt(0))][Integer.parseInt(cords.substring(1))];
+        return ans;
+    }
+    @Override
+    public int height() // returns this.height
+    {
+        return table[0].length;
+    }
+
+    @Override
+    public int width() { // returns this.length
+        return table.length;
+    }
+    /**
+     * return if (xx,yy) cords are within the table's boundaries
+     **/
+    @Override
+    public boolean isIn(int xx, int yy)
+    {
+        boolean ans = xx>=0 && yy>=0;
+        if(ans)
+        {Cell cell = get(xx, yy);
+            return cell!=null;}
+        return false;
+    }
+    /**This algorithm clears the table**/
+    private void clear()
+    {
+        for (int i = 0; i < width(); i++) {
+            for (int j = 0; j < height(); j++) {
+                this.table[i][j] = new SCell("");
+            }
+        }
+    }
+    /**
+     * returns an array than contain the depth of the cells in @table.
+     * **/
+    @Override
+    public int[][] depth() {
+        int[][] ans = new int[width()][height()];
+        for (int i = 0; i < width(); i++) {
+            for (int j = 0; j < height(); j++) {
+                ans[i][j] = setDepth(table[i][j]);
+                this.table[i][j].setOrder(ans[i][j]);
+            }
+        }
+        return ans;
+    }
+
     /**
      * The algorithm calculates values for all @table and update the printed value of the cells.
      **/
@@ -111,18 +147,7 @@ public class Ex2Sheet implements Sheet {
             }
         }
     }
-    /**
-     * return if (xx,yy) cords are within the table's boundaries
-     **/
-    @Override
-    public boolean isIn(int xx, int yy)
-    {
-        boolean ans = xx>=0 && yy>=0;
-        if(ans)
-        {Cell cell = get(xx, yy);
-            return cell!=null;}
-        return false;
-    }
+
     /**
      * This method takes a Cell and calculates its depth
      * The method uses a Set (defined earlier) to identify circular references and avoid a Stack Overflow.
@@ -191,30 +216,6 @@ public class Ex2Sheet implements Sheet {
         }
     }
 
-
-    /**
-     * returns an array than contain the depth of the cells in @table.
-     * **/
-    @Override
-    public int[][] depth() {
-        int[][] ans = new int[width()][height()];
-        for (int i = 0; i < width(); i++) {
-            for (int j = 0; j < height(); j++) {
-                ans[i][j] = setDepth(table[i][j]);
-                this.table[i][j].setOrder(ans[i][j]);
-            }
-        }
-        return ans;
-    }
-    /**This algorithm clears the table**/
-    private void clear()
-    {
-        for (int i = 0; i < width(); i++) {
-            for (int j = 0; j < height(); j++) {
-                this.table[i][j] = new SCell("");
-            }
-        }
-    }
     /**
      * This method reads the stored txt file and assigns each cell its appropriate value.
      * It utilizes Java's FileReader and BufferedReader.

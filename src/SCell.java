@@ -16,6 +16,20 @@ public class SCell implements Cell {
     public int getOrder() {
         return this.dpth;
     }
+    /**checks if a string is a number
+     **/
+    public static boolean isNumber(String str) {
+        try {
+            double s = Double.parseDouble(str);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+    public static boolean is_valid(Cell cell)
+    {
+        return (is_form(cell.getData()) || isNumber(cell.getData())|| isText(cell.getData()));
+    }
     /**
      * this algorithm checks if a string has an invalid char and every opening parenthesis has closing parenthesis
      * @param form and return if the string is a valid formula.
@@ -51,16 +65,7 @@ public class SCell implements Cell {
     public String getData() {
         return line;
     }
-    /**checks if a string is a number
-     **/
-    public static boolean isNumber(String str) {
-        try {
-            double s = Double.parseDouble(str);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
-    }
+
     public static boolean isText(String str) {
         return !isNumber(str) && !str.startsWith("=");
     }
@@ -90,10 +95,6 @@ public class SCell implements Cell {
     @Override
     public void setType(int t) {
         type = t;
-    }
-    public static boolean is_valid(Cell cell)
-    {
-        return (is_form(cell.getData()) || isNumber(cell.getData())|| isText(cell.getData()));
     }
 
     @Override
