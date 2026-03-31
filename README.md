@@ -1,33 +1,34 @@
-# 2D Spreadsheet Engine 📊
+# Java Spreadsheet Engine 📊
 
-A basic yet robust Object-Oriented 2D Spreadsheet engine implemented in **Java**. 
-This project focuses on recursive evaluation, string parsing, and complex dependency management, simulating core functionalities found in popular spreadsheet software.
+An advanced, Object-Oriented 2D Spreadsheet engine developed in **Java**. 
+This project replicates core spreadsheet functionalities, featuring a custom mathematical expression parser, dynamic cell referencing, and a robust dependency resolution system to detect and prevent circular references.
 
 ## ✨ Key Features
 
-* [cite_start]**Three Cell Types:** Supports varied data entry—Text, Numbers (Double), and dynamic Formulas[cite: 46].
-* [cite_start]**Advanced Formula Evaluation:** Parses and calculates complex mathematical formulas including nested parentheses and standard arithmetic operations (`+`, `-`, `*`, `/`)[cite: 47, 49, 50].
-* [cite_start]**Dynamic Cell Referencing:** Formulas can reference other cells (e.g., `=A1+B2`)[cite: 51], allowing for interconnected data calculations.
-* [cite_start]**Error Handling & Validation:** Automatically detects and handles invalid formulas (`ERR_FORM_WRONG`)[cite: 54, 55].
-* [cite_start]**Circular Dependency Detection:** Uses a depth-calculation algorithm to identify and prevent endless reference loops (`ERR_CYCLE`)[cite: 56, 161].
-* [cite_start]**GUI Integration:** Integrates with a provided Graphical User Interface for real-time visualization, editing, saving, and loading of spreadsheet data[cite: 164, 165].
+* **Dynamic Data Types:** Seamlessly handles and differentiates between raw Text, Numbers (Doubles), and complex Formulas.
+* **Mathematical Formula Engine:** Evaluates complex nested formulas (e.g., `=((A1+B2)*3)/2`) supporting standard arithmetic operations using recursive parsing algorithms.
+* **Dynamic Cell Referencing:** Formulas can accurately reference other cells across the grid. The engine automatically updates dependent cells when referenced values change.
+* **Circular Dependency Detection:** Implements a depth-calculation algorithm to map the dependency graph of the spreadsheet. Effectively detects and safely flags infinite reference loops (`ERR_CYCLE`) and syntax errors (`ERR_FORM_WRONG`).
+* **Save & Load Functionality:** Supports exporting the spreadsheet state to a text file and importing it back without data loss.
+* **Graphical User Interface (GUI):** Fully integrated with a provided GUI (`Ex2GUI` & `StdDrawEx2`) for interactive real-time editing and visual feedback.
 
-## 🏗️ Technical Implementation
+## 🏗️ Architecture & OOP Design
 
-* [cite_start]**Recursive Parsing:** Utilizes recursive algorithms to parse and evaluate mathematical strings and resolve nested dependencies[cite: 149].
-* [cite_start]**Dependency Graph:** Implements a topological sort-like approach (via computational depth) to determine the correct order of cell evaluation and flag circular references[cite: 161].
-* [cite_start]**Object-Oriented Design:** Designed using strict OOP principles, separating the `Spreadsheet` logic from individual `Cell` entities, adhering to provided interfaces (`Sheet`, `Cell`, `Index2D`)[cite: 194].
-* [cite_start]**Comprehensive Testing:** Logic and edge cases are validated using JUnit testing[cite: 196].
+* **Interface-Driven Development:** Built upon a strict set of interfaces (`Sheet`, `Cell`, `Index2D`) ensuring high modularity and loose coupling.
+* **`Ex2Sheet`:** The core data structure managing the 2D grid, handling coordinate translations, and orchestrating the global depth-evaluation algorithm.
+* **`SCell`:** The individual cell component responsible for determining its own type, parsing its raw string input, and computing its specific value.
+* **Helper Utilities (`Helpfull` & `Ex2Utils`):** Custom utility classes containing the underlying algorithmic logic for string manipulation, formula validation, and mathematical computation.
+* **Comprehensive Unit Testing:** Core logic, edge cases, and algorithmic boundaries are thoroughly verified using **JUnit** (`Ex2SheetTest`, `SCellTest`).
 
 ## 🛠️ Tech Stack
 
 * **Language:** Java
-* [cite_start]**Development Environment:** IntelliJ IDEA (or any standard Java IDE)[cite: 142].
-* [cite_start]**Testing:** JUnit[cite: 196].
+* **Testing Framework:** JUnit
+* **Architecture:** Object-Oriented Programming (OOP)
 
 ## 🚀 How to Run
 
 1. Clone this repository to your local machine.
-2. Open the project in your preferred IDE (e.g., IntelliJ IDEA).
-3. Ensure you have the GUI `.jar` file included in your project dependencies (if applicable).
-4. [cite_start]Run the `Ex2GUI` main class to launch the visual spreadsheet interface[cite: 167].
+2. Open the project in your preferred IDE (e.g., IntelliJ IDEA, Eclipse).
+3. Ensure that the project structure recognizes the `src` folder as the sources root.
+4. Run the `Ex2GUI.java` main class to launch the visual spreadsheet interface.
